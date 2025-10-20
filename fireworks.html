@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diwali Fireworks</title>
+  <style>
+    body {
+      margin: 0;
+      background: radial-gradient(ellipse at 50% 20%, #ffb86b 0%, #0b1020 70%), linear-gradient(180deg,#1a1a2e 0%, #0b1020 100%);
+      min-height: 100vh;
+      height: 100vh;
+      overflow: hidden;
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+    .video-frame {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+    }
+    video {
+      max-width: 90vw;
+      max-height: 80vh;
+      border-radius: 24px;
+      box-shadow: 0 0 60px 10px #ffb86b88;
+      background: #000;
+      outline: none;
+      display: block;
+      margin: 0 auto;
+    }
+    .overlay-text {
+      position: absolute;
+      top: 32px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      color: #fff8e1;
+      font-size: 2.2rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 12px #000, 0 0 18px #ffb86b88;
+      pointer-events: none;
+      animation: fadein 2s;
+    }
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .skip-btn {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(90deg,#ffb86b,#ff7b4d);
+      color: #2b0a00;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      padding: 12px 32px;
+      box-shadow: 0 2px 12px #ffb86b88;
+      cursor: pointer;
+      transition: background .2s;
+      z-index: 10;
+    }
+    .skip-btn:hover {
+      background: linear-gradient(90deg,#ff7b4d,#ffb86b);
+    }
+    .festive-top {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 24px;
+      z-index: 5;
+      pointer-events: none;
+    }
+    .festive-diya {
+      width: 38px; height: 38px;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <div class="festive-top">
+    <span class="festive-diya">🪔</span>
+    <span class="festive-diya">🪔</span>
+    <span class="festive-diya">🪔</span>
+    <span class="festive-diya">🪔</span>
+    <span class="festive-diya">🪔</span>
+  </div>
+  <div class="video-frame">
+    <video id="fwvid" src="assets/fireworks.mp4" autoplay playsinline muted></video>
+    <audio id="fw-sound" src="assets/sounds/fireworks.mp3" preload="auto"></audio>
+    <div class="overlay-text">Enjoy the Diwali Fireworks!</div>
+    <button class="skip-btn" id="skipBtn">Skip to Wish</button>
+  </div>
+  <script>
+    // Play fireworks sound when video starts
+    const vid = document.getElementById('fwvid');
+    const fwSound = document.getElementById('fw-sound');
+    const skipBtn = document.getElementById('skipBtn');
+    let redirected = false;
+    function goWish() {
+      if (!redirected) {
+        redirected = true;
+        window.location.href = 'wish.html';
+      }
+    }
+    vid.addEventListener('play', () => {
+      if (fwSound) {
+        try {
+          fwSound.currentTime = 0;
+          fwSound.play().catch(()=>{});
+        } catch(e){}
+      }
+    });
+    vid.addEventListener('ended', goWish);
+    setTimeout(goWish, 7000);
+    skipBtn.addEventListener('click', goWish);
+  </script>
+</body>
+</html>
